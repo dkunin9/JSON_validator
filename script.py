@@ -25,42 +25,46 @@ def validate_schemas():
     return True
 
 
-def validate_cmarker_created(jsonData):
+def validate_cmarker_created(jsonData, filename):
     try:
         with open('schema/cmarker_created.schema') as schema: 
             jsonSchema = json.load(schema)
             Draft7Validator(jsonSchema).validate(jsonData)
     except jsonschema.exceptions.ValidationError as err:
+        logging.error(filename + ' is invalid with cmarker_created.schema. The error is:  ' + err.message)
         print(err.message)
         return False
     return True
 
-def validate_label_selected(jsonData):
+def validate_label_selected(jsonData, filename):
     try:
         with open('schema/label_selected.schema') as schema: 
             jsonSchema = json.load(schema)
             Draft7Validator(jsonSchema).validate(jsonData)
     except jsonschema.exceptions.ValidationError as err:
+        logging.error(filename + ' is invalid with label_selected.schema. The error is:  ' + err.message)
         print(err.message)
         return False
     return True
 
-def validate_sleep_created(jsonData):
+def validate_sleep_created(jsonData, filename):
     try:
         with open('schema/sleep_created.schema') as schema: 
             jsonSchema = json.load(schema)
             Draft7Validator(jsonSchema).validate(jsonData)
     except jsonschema.exceptions.ValidationError as err:
+        logging.error(filename + ' is invalid with sleep_created.schema. The error is:  ' + err.message)
         print(err.message)
         return False
     return True
 
-def validate_workout_created(jsonData):
+def validate_workout_created(jsonData, filename):
     try:
         with open('schema/workout_created.schema') as schema: 
             jsonSchema = json.load(schema)
             Draft7Validator(jsonSchema).validate(jsonData)
     except jsonschema.exceptions.ValidationError as err:
+        logging.error(filename + ' is invalid with workout_created.schema. The error is:  ' + err.message)
         print(err.message)
         return False
     return True
@@ -72,7 +76,7 @@ if __name__ == '__main__':
         print('...all schemas are valid')
         logging.info("Given schemas are valid")
     else: 
-        print('...schemas invalid')
+        print('...schemas are invalid')
         logging.error("Given schemas are invalid")
 
     
@@ -83,10 +87,10 @@ if __name__ == '__main__':
         try:
             with open(filename) as data: 
                 jsondata = json.load(data)
-                validate_cmarker_created(jsondata)
-                validate_label_selected(jsondata)
-                validate_sleep_created(jsondata)
-                validate_workout_created(jsondata)
+                validate_cmarker_created(jsondata, filename)
+                validate_label_selected(jsondata, filename)
+                validate_sleep_created(jsondata, filename)
+                validate_workout_created(jsondata, filename)
         except IOError as exc:
             if exc.errno != errno.EISDIR: 
                 raise
